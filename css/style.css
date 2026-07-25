@@ -331,3 +331,23 @@ body {
 		max-width: 100%;
 	}
 }
+
+/* ====== Reveal on scroll: seção #sobre ====== */
+#sobre .feature-card {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+  pointer-events: none;
+  will-change: opacity, transform; /* ← adiciona isto */
+}
+
+#sobre.is-visible .feature-card {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Atraso em cascata: 1º card, 2º card, 3º card */
+#sobre.is-visible .feature-card:nth-child(1) { transition-delay: 0s; }
+#sobre.is-visible .feature-card:nth-child(2) { transition-delay: 0.18s; }
+#sobre.is-visible .feature-card:nth-child(3) { transition-delay: 0.36s; }

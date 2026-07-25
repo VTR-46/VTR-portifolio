@@ -139,58 +139,85 @@
 	</div>
 
 	<script>
-		window.addEventListener("load", function () {
-			var preloader = document.getElementById("preloader");
-			setTimeout(function () {
-				preloader.classList.add("preloader-hidden");
-				setTimeout(function () {
-					preloader.remove();
-				}, 700);
-			}, 1400);
-		});
+window.addEventListener("load", function () {
+	var preloader = document.getElementById("preloader");
+	setTimeout(function () {
+		preloader.classList.add("preloader-hidden");
+		setTimeout(function () {
+			preloader.remove();
 
-		(function () {
-			var phrases = [
-				"Transformo ideias em soluções digitais.",
-				"Focado em performance, design e experiência do usuário.",
-				"Veja meus projetos!"
-			];
-			var TYPE_DURATION = 2000;
-			var HOLD_DURATION = 10000;
-			var DELETE_DURATION = 2000;
-			var typingEl = document.getElementById("typing-text");
-			var phraseIndex = 0;
-			var charIndex = 0;
-			var isDeleting = false;
+			initRevealObserver();
+		}, 700);
+	}, 1400);
+});
 
-			function tick() {
-				var phrase = phrases[phraseIndex];
-				var delay;
+(function () {
+	var phrases = [
+		"Transformo ideias em soluções digitais.",
+		"Focado em performance, design e experiência do usuário.",
+		"Veja meus projetos!",
+		"Estudante de Análise e Desenvolvimento de Sistemas."
+	];
+	var TYPE_DURATION = 2000;
+	var HOLD_DURATION = 10000;
+	var DELETE_DURATION = 2000;
+	var typingEl = document.getElementById("typing-text");
+	var phraseIndex = 0;
+	var charIndex = 0;
+	var isDeleting = false;
 
-				if (isDeleting) {
-					charIndex--;
-					delay = DELETE_DURATION / phrase.length;
-				} else {
-					charIndex++;
-					delay = TYPE_DURATION / phrase.length;
+	function tick() {
+		var phrase = phrases[phraseIndex];
+		var delay;
+
+		if (isDeleting) {
+			charIndex--;
+			delay = DELETE_DURATION / phrase.length;
+		} else {
+			charIndex++;
+			delay = TYPE_DURATION / phrase.length;
+		}
+
+		typingEl.textContent = phrase.slice(0, charIndex);
+
+		if (!isDeleting && charIndex === phrase.length) {
+			isDeleting = true;
+			delay = HOLD_DURATION;
+		} else if (isDeleting && charIndex === 0) {
+			isDeleting = false;
+			phraseIndex = (phraseIndex + 1) % phrases.length;
+			delay = 500;
+		}
+
+		setTimeout(tick, delay);
+	}
+
+	tick();
+})();
+
+
+function initRevealObserver() {
+	var sobreSection = document.getElementById("sobre");
+	if (!sobreSection) return;
+
+	var observer = new IntersectionObserver(
+		function (entries) {
+			entries.forEach(function (entry) {
+				if (entry.isIntersecting) {
+					entry.target.classList.add("is-visible");
+					observer.unobserve(entry.target);
 				}
+			});
+		},
+		{
+			threshold: 0.15,
 
-				typingEl.textContent = phrase.slice(0, charIndex);
+			rootMargin: "0px 0px -10% 0px"
+		}
+	);
 
-				if (!isDeleting && charIndex === phrase.length) {
-					isDeleting = true;
-					delay = HOLD_DURATION;
-				} else if (isDeleting && charIndex === 0) {
-					isDeleting = false;
-					phraseIndex = (phraseIndex + 1) % phrases.length;
-					delay = 500;
-				}
-
-				setTimeout(tick, delay);
-			}
-
-			tick();
-		})();
+	observer.observe(sobreSection);
+}
 	</script>
 </body>
 </html>
