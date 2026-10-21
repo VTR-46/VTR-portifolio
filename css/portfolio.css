@@ -753,6 +753,45 @@ ul {
   line-height: 1.7;
 }
 
+.project__racer {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: clamp(250px, 28vw, 420px);
+  overflow: hidden;
+  margin-bottom: clamp(28px, 3.4vw, 48px);
+  border-block: 1px solid var(--line-soft);
+  background: radial-gradient(ellipse at center, #1a190e 0%, var(--ink) 72%);
+}
+
+.project__racer-banner {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.project__racer-banner img {
+  width: 86%;
+}
+
+.project__racer-car {
+  position: absolute;
+  left: 0;
+  width: min(72%, 900px);
+  max-width: none;
+  display: none;
+  will-change: transform;
+}
+
+.project__racer.is-active .project__racer-banner {
+  clip-path: inset(0 0 0 var(--reveal-left));
+}
+
+.project__racer.is-active .project__racer-car {
+  display: block;
+}
+
 .project__video {
   aspect-ratio: 16 / 9;
 }
@@ -1503,6 +1542,18 @@ ul {
 
   .project__description {
     font-size: 13px;
+  }
+
+  .project__racer {
+    height: 250px;
+  }
+
+  .project__racer-banner img {
+    width: 94%;
+  }
+
+  .project__racer-car {
+    width: 125%;
   }
 
   .project__images {

@@ -39,6 +39,8 @@
   var introFill = document.querySelector('.intro__fill');
   var introProgress = document.getElementById('intro-progress');
   var introSkip = document.getElementById('intro-skip');
+  var racer = document.querySelector('.project__racer');
+  var racerCar = document.querySelector('.project__racer-car');
 
   var introTimeline = null;
   var heroTimeline = null;
@@ -402,6 +404,26 @@
     heroTimeline.seek(progress * heroTimeline.duration);
   }
 
+  function updateRacerScroll() {
+    if (!racer || !racerCar) return;
+    if (reduced) {
+      racer.classList.remove('is-active');
+      return;
+    }
+    racer.classList.add('is-active');
+    var rect = racer.getBoundingClientRect();
+    var width = racer.clientWidth;
+    var carWidth = racerCar.clientWidth;
+    if (!width || !carWidth) {
+      racer.classList.remove('is-active');
+      return;
+    }
+    var progress = clamp(1 - rect.top / (window.innerHeight * 0.85), 0, 1);
+    var carX = width - progress * (width + carWidth);
+    racerCar.style.transform = 'translate3d(' + carX + 'px, 0, 0)';
+    racer.style.setProperty('--reveal-left', clamp(carX + carWidth, 0, width) + 'px');
+  }
+
   function requestHeroUpdate() {
     if (heroScheduled) {
       return;
@@ -410,6 +432,7 @@
     window.requestAnimationFrame(function () {
       heroScheduled = false;
       updateHeroScroll();
+      updateRacerScroll();
     });
   }
 
@@ -631,9 +654,7 @@
 
   function onScroll() {
     setHeaderState();
-    if (isDesktopScene()) {
-      requestHeroUpdate();
-    }
+    if (racer || isDesktopScene()) requestHeroUpdate();
   }
 
   function failSafe() {
@@ -641,6 +662,7 @@
       endIntro(true);
     }
     root.classList.remove('motion-ready');
+    if (racer) racer.classList.remove('is-active');
     disarmMobileReveal();
     resetHeroStyles();
   }
@@ -649,6 +671,7 @@
     renderProject(PROJECT);
     observeMedia();
     initHero();
+    updateRacerScroll();
     initIntro();
     initNav();
     exposeApi();
@@ -674,6 +697,7 @@
           endIntro(true);
         }
         refreshMotionMode();
+        updateRacerScroll();
       });
     }
     if (desktopQuery.addEventListener) {
