@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "preview": "node scripts/preview.mjs",
+    "test": "node --test"
+  },
   "dependencies": {
     "@tailwindcss/cli": "^4.3.3",
     "tailwindcss": "^4.3.3"
