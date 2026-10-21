@@ -665,6 +665,7 @@ ul {
   width: 100%;
   max-width: var(--max);
   margin-inline: auto;
+  margin-bottom: 50px;
 }
 
 .projects__title-row {
@@ -751,6 +752,14 @@ ul {
   color: var(--muted);
   font-size: 14px;
   line-height: 1.7;
+}
+
+.project__description--detail {
+  width: 100%;
+  max-width: none;
+  padding: clamp(20px, 3vw, 42px) var(--gutter);
+  border-block: 1px solid var(--line-soft);
+  text-align: center;
 }
 
 .project__racer {

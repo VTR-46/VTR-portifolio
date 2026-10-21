@@ -4,14 +4,14 @@
   var PROJECT = {
     title: 'Próximo projeto',
     description: 'O primeiro estudo de caso está sendo preparado. Vídeo, imagens e repositório serão publicados aqui quando estiverem prontos.',
-    video: '',
+    video: 'data/projetos/hypercorsa.mp4',
     images: [
-      { src: '', alt: '' },
-      { src: '', alt: '' },
-      { src: '', alt: '' },
-      { src: '', alt: '' }
+      { src: 'data/projetos/HCX1.png', alt: '' },
+      { src: 'data/projetos/HCX2.png', alt: '' },
+      { src: 'data/projetos/HCX3.png', alt: '' },
+      { src: 'data/projetos/HCX4.png', alt: '' }
     ],
-    repository: ''
+    repository: 'https://github.com/VTR-46/HyperCorsaX'
   };
 
   var root = document.documentElement;
