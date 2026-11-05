@@ -27,6 +27,7 @@
   var stage = document.querySelector('[data-hero-stage]');
   var lead = document.querySelector('[data-hero="lead"]');
   var portrait = document.querySelector('[data-hero="portrait"]');
+  var portraitImage = portrait && portrait.querySelector('img');
   var bio = document.querySelector('[data-hero="bio"]');
   var ghost = document.querySelector('.hero__ghost');
   var track = document.querySelector('.hero__track');
@@ -52,6 +53,8 @@
   var mobileRevealTimer = 0;
   var resizeTimer = 0;
   var lastScrollY = 0;
+  var portraitIndex = 0;
+  var portraitPreloads = [];
 
   function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
@@ -344,12 +347,31 @@
     heroShift = stage.clientWidth * 0.255;
   }
 
+  function setPortraitProgress(progress) {
+    if (!portraitImage) return;
+    var index = Math.min(4, Math.floor(clamp(progress, 0, 1) * 5));
+    if (index !== portraitIndex) {
+      portraitIndex = index;
+      portraitImage.src = 'data/img/pessoa' + (index + 1) + '.png';
+    }
+  }
+
+  function updateMobilePortrait() {
+    if (!portrait || !bio) return;
+    var portraitTop = portrait.getBoundingClientRect().top;
+    var bioTop = bio.getBoundingClientRect().top;
+    setPortraitProgress(bioTop <= window.innerHeight
+      ? 0
+      : (window.innerHeight - portraitTop) / Math.max(1, bioTop - portraitTop));
+  }
+
   function renderHero(progress) {
     if (!isDesktopScene() || !stage || !lead || !portrait || !bio) {
       return;
     }
 
     var p = clamp(progress, 0, 1);
+    setPortraitProgress(p < 0.38 ? p / 0.38 : 0);
     var moveRaw = clamp((p - 0.06) / 0.66, 0, 1);
     var move = Hyperframes.easeInOutCubic(moveRaw);
     var leadRaw = clamp((p - 0.02) / 0.36, 0, 1);
@@ -393,7 +415,11 @@
   }
 
   function updateHeroScroll() {
-    if (!isDesktopScene() || !hero || !heroTimeline) {
+    if (!hero || !heroTimeline) {
+      return;
+    }
+    if (!isDesktopScene()) {
+      updateMobilePortrait();
       return;
     }
     var distance = hero.offsetHeight - window.innerHeight;
@@ -517,6 +543,7 @@
       root.classList.remove('motion-ready');
       disarmMobileReveal();
       resetHeroStyles();
+      updateHeroScroll();
       return;
     }
 
@@ -530,6 +557,7 @@
 
     resetHeroStyles();
     armMobileReveal();
+    updateHeroScroll();
   }
 
   function scrollToSection(hash, smooth) {
@@ -580,6 +608,11 @@
         renderHero(state.progress);
       }
     });
+    for (var index = 2; index <= 5; index += 1) {
+      var image = new window.Image();
+      image.src = 'data/img/pessoa' + index + '.png';
+      portraitPreloads.push(image);
+    }
     measureHero();
     refreshMotionMode();
     setHeaderState();
@@ -594,9 +627,7 @@
     window.requestAnimationFrame(function () {
       scrollToSection(hash, false);
       setHeaderState();
-      if (isDesktopScene()) {
-        updateHeroScroll();
-      }
+      updateHeroScroll();
     });
   }
 
@@ -750,7 +781,7 @@
 
   function onScroll() {
     setHeaderState();
-    if (racer || isDesktopScene()) requestHeroUpdate();
+    if (racer || hero) requestHeroUpdate();
   }
 
   function failSafe() {
@@ -781,9 +812,7 @@
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(function () {
         measureHero();
-        if (isDesktopScene()) {
-          updateHeroScroll();
-        }
+        updateHeroScroll();
       });
     }
 

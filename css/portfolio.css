@@ -1453,8 +1453,8 @@ ul {
 
 @media (min-width: 900px) {
   .motion-ready .hero {
-    height: 215vh;
-    height: 215svh;
+    height: 300vh;
+    height: 300svh;
     padding: 0;
   }
 
