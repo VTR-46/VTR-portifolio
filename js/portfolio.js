@@ -42,6 +42,7 @@
   var introSkip = document.getElementById('intro-skip');
   var racer = document.querySelector('.project__racer');
   var racerCar = document.querySelector('.project__racer-car');
+  var pitLogo = document.querySelector('.project__pit-logo');
 
   var introTimeline = null;
   var heroTimeline = null;
@@ -451,6 +452,25 @@
     racer.style.setProperty('--reveal-left', clamp(carX + carWidth, 0, width) + 'px');
   }
 
+  function initPitLogoReveal() {
+    if (!pitLogo || reduced || !('IntersectionObserver' in window)) return;
+
+    function arm() {
+      if (reduced) return;
+      var observer = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) {
+          pitLogo.classList.add('is-inview');
+          observer.disconnect();
+        }
+      }, { threshold: 0.2 });
+      pitLogo.classList.add('reveal-armed');
+      observer.observe(pitLogo);
+    }
+
+    if (pitLogo.complete && pitLogo.naturalWidth) arm();
+    else pitLogo.addEventListener('load', arm, { once: true });
+  }
+
   function requestHeroUpdate() {
     if (heroScheduled) {
       return;
@@ -799,6 +819,7 @@
     observeMedia();
     initMediaLightbox();
     initHero();
+    initPitLogoReveal();
     updateRacerScroll();
     initIntro();
     initNav();

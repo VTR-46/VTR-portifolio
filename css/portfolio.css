@@ -775,6 +775,17 @@ ul {
   height: auto;
 }
 
+.motion-ready .project__pit-logo.reveal-armed {
+  opacity: 0;
+  transform: translateX(56px);
+  transition: opacity 0.85s ease, transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.motion-ready .project__pit-logo.reveal-armed.is-inview {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 .project__scorpion-logo {
   flex: 0 0 clamp(72px, 18vw, 220px);
   aspect-ratio: 2048 / 1124;
