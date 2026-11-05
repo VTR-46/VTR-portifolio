@@ -2,8 +2,8 @@
   'use strict';
 
   var PROJECT = {
-    title: 'Próximo projeto',
-    description: 'O primeiro estudo de caso está sendo preparado. Vídeo, imagens e repositório serão publicados aqui quando estiverem prontos.',
+    title: 'Hyper Corsa X',
+    description: 'Sistema de telemetria em tempo real para Assetto Corsa, com dados do simulador exibidos em um painel web interativo.',
     video: 'data/projetos/hypercorsa.mp4',
     images: [
       { src: 'data/projetos/HCX1.png', alt: '' },
@@ -131,6 +131,7 @@
     labelNode.textContent = isVideo ? 'Vídeo em breve' : 'Imagem ' + number;
 
     slot.classList.remove('has-media');
+    slot.removeAttribute('tabindex');
     slot.setAttribute('role', 'img');
     slot.setAttribute('aria-label', isVideo ? 'Vídeo do projeto em breve' : 'Imagem ' + number + ' do projeto em breve');
     slot.replaceChildren(indexNode, labelNode);
@@ -611,6 +612,101 @@
     });
   }
 
+  function initMediaLightbox() {
+    var dialog = document.getElementById('media-dialog');
+    var content = document.getElementById('media-dialog-content');
+    var close = document.getElementById('media-dialog-close');
+    if (!dialog || !content || !close || typeof dialog.showModal !== 'function') return;
+
+    var lastSlot = null;
+    var hidePlayTimer = 0;
+    Array.prototype.forEach.call(document.querySelectorAll('.projects .media-slot.has-media'), function (slot) {
+      var media = slot.querySelector('img, video');
+      if (!media) return;
+      slot.setAttribute('role', 'button');
+      slot.setAttribute('tabindex', '0');
+      slot.setAttribute('aria-label', 'Ampliar ' + (media.alt || media.getAttribute('aria-label') || 'mídia do projeto'));
+      if (media.tagName === 'VIDEO') {
+        media.controls = false;
+        slot.classList.add('has-video');
+      }
+
+      function open() {
+        if (!slot.classList.contains('has-media')) return;
+        var enlarged = document.createElement(media.tagName.toLowerCase());
+        enlarged.src = media.currentSrc || media.src;
+        if (media.tagName === 'IMG') {
+          enlarged.alt = media.alt;
+          content.replaceChildren(enlarged);
+        } else {
+          media.pause();
+          enlarged.controls = true;
+          enlarged.playsInline = true;
+          enlarged.preload = 'metadata';
+          enlarged.setAttribute('aria-label', media.getAttribute('aria-label') || 'Vídeo ampliado');
+          var frame = document.createElement('div');
+          var playButton = document.createElement('button');
+          frame.className = 'media-dialog__video';
+          playButton.className = 'media-dialog__play';
+          playButton.type = 'button';
+          playButton.setAttribute('aria-label', 'Reproduzir vídeo');
+          playButton.addEventListener('click', function () {
+            if (enlarged.paused) startPlayback();
+            else enlarged.pause();
+          });
+          var showPlayButton = function () {
+            window.clearTimeout(hidePlayTimer);
+            playButton.classList.remove('is-hidden');
+            if (!enlarged.paused) {
+              hidePlayTimer = window.setTimeout(function () {
+                playButton.classList.add('is-hidden');
+              }, 500);
+            }
+          };
+          var syncPlayback = function () {
+            var playing = !enlarged.paused && !enlarged.ended;
+            playButton.classList.toggle('is-playing', playing);
+            playButton.setAttribute('aria-label', playing ? 'Pausar vídeo' : 'Reproduzir vídeo');
+            showPlayButton();
+          };
+          var startPlayback = function () {
+            var playback = enlarged.play();
+            if (playback && playback.catch) playback.catch(syncPlayback);
+          };
+          enlarged.addEventListener('play', syncPlayback);
+          enlarged.addEventListener('pause', syncPlayback);
+          enlarged.addEventListener('ended', syncPlayback);
+          enlarged.addEventListener('click', showPlayButton);
+          frame.addEventListener('pointermove', showPlayButton);
+          frame.append(enlarged, playButton);
+          content.replaceChildren(frame);
+        }
+        lastSlot = slot;
+        dialog.showModal();
+        if (media.tagName === 'VIDEO') startPlayback();
+      }
+
+      slot.addEventListener('click', open);
+      slot.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          open();
+        }
+      });
+    });
+
+    close.addEventListener('click', function () { dialog.close(); });
+    dialog.addEventListener('click', function (event) {
+      if (event.target === dialog) dialog.close();
+    });
+    dialog.addEventListener('close', function () {
+      window.clearTimeout(hidePlayTimer);
+      content.replaceChildren();
+      if (lastSlot) lastSlot.focus();
+    });
+    root.classList.add('media-ready');
+  }
+
   function exposeApi() {
     window.VTR = {
       project: PROJECT,
@@ -670,6 +766,7 @@
   function boot() {
     renderProject(PROJECT);
     observeMedia();
+    initMediaLightbox();
     initHero();
     updateRacerScroll();
     initIntro();

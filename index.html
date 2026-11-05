@@ -101,7 +101,7 @@
           <p class="hero__bio-lead">Victor Ricardo — Desenvolvedor Full Stack em formação.</p>
           <p class="hero__bio-copy">Em formação, com foco em desenvolvimento web e construção de interfaces. Este portfólio reúne estudos, experimentos e projetos em evolução.</p>
           <div class="hero__tech">
-            <h3 id="tech-languages-title">Ferramentas</h3>
+            <h3 id="tech-languages-title">Linguagens</h3>
             <div class="tech-marquee tech-marquee--right">
               <div class="tech-marquee__track">
                 <ul class="tech-marquee__group" aria-labelledby="tech-languages-title">
@@ -167,19 +167,19 @@
       <p class="section-kicker"><span>02</span> Projetos</p>
       <div class="projects__title-row">
         <h2 id="projetos-title">Projetos<span class="accent">.</span></h2>
-        <p class="projects__intro">Um espaço reservado para o primeiro estudo de caso. Vídeo, imagens e repositório entram aqui quando estiverem prontos.</p>
+        <p class="projects__intro">Projetos de desenvolvimento web, interfaces e experiências digitais, do protótipo à implementação.</p>
       </div>
     </div>
 
-    <!-- <article class="project" aria-labelledby="project-title">
+    <article class="project" aria-labelledby="project-title">
       <header class="project__head">
         <span class="project__index" aria-hidden="true">01</span>
         <div class="project__heading">
           <p class="project__status"><span class="status-dot" aria-hidden="true"></span><span id="project-status">Em preparação</span></p>
-          <h3 id="project-title">Próximo projeto</h3>
-          <p class="project__description" id="project-description">O primeiro estudo de caso está sendo preparado. Vídeo, imagens e repositório serão publicados aqui quando estiverem prontos.</p>
+          <h3 id="project-title">Hyper Corsa X</h3>
+          <p class="project__description" id="project-description">Sistema de telemetria em tempo real para Assetto Corsa, com dados do simulador exibidos em um painel web interativo.</p>
         </div>
-      </header> -->
+      </header>
       <div class="project__racer">
         <div class="project__racer-banner"><img src="img/bannerIcon.png" alt="HYPERCORSAX"></div>
         <img class="project__racer-car" src="img/F1Car.png" alt="" aria-hidden="true">
@@ -221,7 +221,62 @@
         <a class="text-link" href="#contato">Falar sobre o projeto <span aria-hidden="true">↗</span></a>
       </footer>
     </article>
+
+    <article class="project project--pithub" aria-labelledby="pithub-title">
+      <header class="project__head">
+        <span class="project__index" aria-hidden="true">02</span>
+        <div class="project__heading">
+          <div class="project__title-with-logo">
+            <div class="project__pit-copy">
+              <h3 id="pithub-title">PitHub</h3>
+              <p class="project__description">PitHub é a plataforma interna da Scorpion FSAE, em versão alfa e em testes com os coordenadores da equipe. Reúne recursos de gestão de projetos, tarefas, cronogramas, estoque, compras e finanças, além de uma área de aprendizagem (LMS) em desenvolvimento para apoiar a formação dos membros.</p>
+            </div>
+            <img class="project__pit-logo" src="data/projetos/ILR_frete-lado.png" alt="Carro da equipe Scorpion FSAE" width="1679" height="937" loading="lazy">
+          </div>
+        </div>
+      </header>
+      <div class="project__media">
+        <div class="project__images">
+          <div class="media-slot has-media"><img src="data/projetos/Pit1.png" alt="Painel geral do PitHub com orçamento, estoque e progresso dos subsistemas" loading="lazy" decoding="async"></div>
+          <div class="media-slot has-media"><img src="data/projetos/Pit2.png" alt="Página de projetos do PitHub" loading="lazy" decoding="async"></div>
+          <div class="media-slot has-media"><img src="data/projetos/Pit3.png" alt="Quadro de tarefas do PitHub" loading="lazy" decoding="async"></div>
+          <div class="media-slot has-media"><img src="data/projetos/Pit4.png" alt="Painel da capitania do PitHub com membros e funções" loading="lazy" decoding="async"></div>
+        </div>
+      </div>
+      <footer class="project__footer">
+        <span class="project__repo">Projeto interno · repositório privado</span>
+      </footer>
+    </article>
+
+    <article class="project project--scorpion" aria-labelledby="scorpion-title">
+      <header class="project__head">
+        <span class="project__index" aria-hidden="true">03</span>
+        <div class="project__heading">
+          <h3 id="scorpion-title">Site da Scorpion FSAE</h3>
+          <p class="project__description">Criação do site da Scorpion FSAE, coordenando os membros e desenvolvendo em conjunto desde o protótipo até o versionamento no GitHub.</p>
+        </div>
+      </header>
+      <div class="project__media">
+        <div class="project__video media-slot media-slot--video has-media">
+          <video src="data/projetos/Homepage.mp4" controls playsinline preload="metadata" aria-label="Vídeo da página inicial do site da Scorpion FSAE"></video>
+        </div>
+        <div class="project__images">
+          <div class="media-slot has-media"><img src="data/projetos/prototipo.png" alt="Protótipo do site da Scorpion FSAE" loading="lazy" decoding="async"></div>
+          <div class="media-slot has-media"><video src="data/projetos/Competicao.mp4" controls playsinline preload="metadata" aria-label="Vídeo da página de competição do site da Scorpion FSAE"></video></div>
+          <div class="media-slot has-media"><img src="data/projetos/loja.png" alt="Página da loja do site da Scorpion FSAE" loading="lazy" decoding="async"></div>
+          <div class="media-slot has-media"><img src="data/projetos/Homepageimg.png" alt="Página inicial do site da Scorpion FSAE" loading="lazy" decoding="async"></div>
+        </div>
+      </div>
+      <footer class="project__footer">
+        <a class="text-link" href="https://vtr-46.github.io/Scorpion-FSAE/" target="_blank" rel="noopener noreferrer">Ver site <span aria-hidden="true">↗</span></a>
+      </footer>
+    </article>
   </section>
+
+  <dialog class="media-dialog" id="media-dialog" aria-label="Mídia ampliada">
+    <button class="media-dialog__close" id="media-dialog-close" type="button" aria-label="Fechar mídia ampliada">×</button>
+    <div class="media-dialog__content" id="media-dialog-content"></div>
+  </dialog>
 
   <section class="contact" id="contato" aria-labelledby="contato-title">
     <span class="contact__ghost" aria-hidden="true">03</span>
