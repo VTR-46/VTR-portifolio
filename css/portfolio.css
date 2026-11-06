@@ -985,7 +985,8 @@ ul {
   object-fit: cover;
 }
 
-.project--scorpion .media-slot img {
+.project--scorpion .media-slot img,
+.project--automobili .media-slot img {
   object-fit: contain;
 }
 
